@@ -6,19 +6,28 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: "24"
+          node-version: "26"
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
 
-      - run: npm publish --tag alpha
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm install -g npm@latest
+
+      - name: Stage release with alpha tag
+        run: npm stage publish --tag alpha
+
+      # Run after the staged version is approved and published:
+      - name: Add latest dist-tag
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          npm dist-tag add "${PKG_NAME}@${PKG_VERSION}" latest
