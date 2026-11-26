@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetSlim.js — Documentation</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-alt: #162033;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #7dd3fc;
+      --amber: #fbbf24;
+      --code-bg: #0b1120;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    nav.sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--surface-alt);
+      border-right: 1px solid var(--border);
+      padding: 28px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .brand {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .badge {
+      font-size: 0.72rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+    .tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    nav.sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    nav.sidebar li {
+      margin-bottom: 6px;
+    }
+    nav.sidebar a {
+      display: block;
+      padding: 7px 12px;
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav.sidebar a:hover {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--text);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 960px;
+      padding: 40px 48px 80px;
+    }
+    h1, h2, h3 {
+      color: #fff;
+      line-height: 1.3;
+    }
+    h1 { font-size: 2.2rem; margin-top: 0; }
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 48px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1.15rem; margin-top: 28px; color: var(--accent-hover); }
+    p { color: #cbd5e1; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      color: var(--accent-hover);
+    }
+
+    /* Code Blocks */
+    .code-wrap {
+      position: relative;
+      margin: 16px 0;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-size: 0.87rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+      margin: 0;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Callouts */
+    .callout {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    .callout.warn { border-left-color: var(--amber); }
+    .callout strong { color: #fff; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: var(--surface);
+      color: #fff;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td { background: rgba(30, 41, 59, 0.45); }
+
+    @media (max-width: 820px) {
+      body { flex-direction: column; }
+      nav.sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      main { padding: 28px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar">
+    <div class="brand">NetSlim.js <span class="badge">v0.0.1-alpha.125</span></div>
+    <div class="tagline">Client-side network optimizer, compressor &amp; response unpacker</div>
+    <ul>
+      <li><a href="#overview">1. Overview &amp; Modes</a></li>
+      <li><a href="#installation">2. Installation</a></li>
+      <li><a href="#quickstart">3. Quick Start</a></li>
+      <li><a href="#configuration">4. Configuration Options</a></li>
+      <li><a href="#api-reference">5. API Methods</a></li>
+      <li><a href="#compression-unpacking">6. Compression &amp; Unpacking</a></li>
+      <li><a href="#server-compatibility">7. Zero-Server-Setup Guide</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="overview">
+      <h1>NetSlim.js Documentation</h1>
+      <p>
+        <strong>NetSlim.js</strong> is a zero-dependency JavaScript library that reduces outgoing payload sizes,
+        eliminates duplicate network requests, caches repeat <code>GET</code> calls, optimizes image uploads, and provides
+        built-in <code>gzip</code> / <code>deflate</code> compression and response unpacking helpers.
+      </p>
+
+      <div class="callout">
+        <strong>Two Operating Modes:</strong>
+        <ul style="margin: 8px 0 0; padding-left: 20px;">
+          <li><code>mode: 'compatible'</code> (Default) — Works with <strong>zero server changes</strong> by minifying JSON, stripping optional empty values, resizing oversized image uploads, coalescing concurrent requests, and caching repeat <code>GET</code> reads.</li>
+          <li><code>mode: 'compressed'</code> — Compresses large outgoing text/JSON bodies using native <code>CompressionStream</code> (<code>gzip</code> or <code>deflate</code>) and attaches <code>Content-Encoding</code> for endpoints or edge workers configured to unpack compressed request bodies.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="installation">
+      <h2>2. Installation</h2>
+      <h3>Via Script Tag (Browser)</h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>&lt;script src="./netslim.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const slim = new NetSlim({ cacheTtlMs: 10000, debug: true });
+  slim.enableGlobal();
+&lt;/script&gt;</code></pre>
+      </div>
+
+      <h3>Via CommonJS / Bundler</h3>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>const NetSlim = require('./netslim.js');
+
+const slim = new NetSlim({
+  mode: 'compatible',
+  cacheTtlMs: 15000,
+  persistCache: true
+});
+slim.enableGlobal();</code></pre>
+      </div>
+    </section>
+
+    <section id="quickstart">
+      <h2>3. Quick Start</h2>
+      <p>
+        Once <code>slim.enableGlobal()</code> is called, existing <code>fetch()</code> calls across your app automatically
+        benefit from request deduplication, caching, JSON minification, image optimization, and envelope unpacking.
+      </p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>const slim = new NetSlim({
+  mode: 'compatible',
+  cacheTtlMs: 10000,
+  persistCache: true,
+  stripNulls: false,
+  maxImageWidth: 1920,
+  imageQuality: 0.85,
+  debug: true
+});
+
+slim.enableGlobal();
+
+// 1. Concurrent identical GET calls are merged into 1 network request
+const [userA, userB] = await Promise.all([
+  fetch('/api/profile').then(r => r.json()),
+  fetch('/api/profile').then(r => r.json())
+]);
+
+// 2. Pretty-printed JSON bodies are minified automatically before sending
+await fetch('/api/settings', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ theme: 'dark', notifications: true }, null, 4)
+});
+
+// 3. Check savings anytime
+console.log(slim.getStats());</code></pre>
+      </div>
+    </section>
+
+    <section id="configuration">
+      <h2>4. Configuration Options</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>mode</code></td>
+            <td><code>'compatible' | 'compressed'</code></td>
+            <td><code>'compatible'</code></td>
+            <td><code>'compatible'</code> keeps requests valid for untouched servers. <code>'compressed'</code> sends <code>Content-Encoding</code> compressed bytes for large string bodies.</td>
+          </tr>
+          <tr>
+            <td><code>format</code></td>
+            <td><code>'gzip' | 'deflate'</code></td>
+            <td><code>'gzip'</code></td>
+            <td>Compression format used by <code>compress()</code>, <code>decompress()</code>, and <code>mode: 'compressed'</code>.</td>
+          </tr>
+          <tr>
+            <td><code>autoUnpackResponse</code></td>
+            <td><code>boolean</code></td>
+            <td><code>true</code></td>
+            <td>Automatically unpacks JSON responses shaped like <code>{ _ns: "gzip" | "deflate" | "br", data: "&lt;base64&gt;" }</code>.</td>
+          </tr>
+          <tr>
+            <td><code>brotliDecompress</code></td>
+            <td><code>function | null</code></td>
+            <td><code>null</code></td>
+            <td>Optional async decoder <code>(bytes: Uint8Array) =&gt; Uint8Array | string</code> used when unpacking <code>'br'</code> payloads.</td>
+          </tr>
+          <tr>
+            <td><code>cacheTtlMs</code></td>
+            <td><code>number</code></td>
+            <td><code>10000</code></td>
+            <td>Time-to-live (in ms) for cached <code>GET</code> responses. Set to <code>0</code> to disable caching.</td>
+          </tr>
+          <tr>
+            <td><code>persistCache</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Persists cached <code>GET</code> text/JSON responses in <code>localStorage</code> across page reloads.</td>
+          </tr>
+          <tr>
+            <td><code>storagePrefix</code></td>
+            <td><code>string</code></td>
+            <td><code>'netslim:'</code></td>
+            <td>Key prefix used when <code>persistCache</code> is enabled.</td>
+          </tr>
+          <tr>
+            <td><code>stripNulls</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Removes <code>null</code> and <code>undefined</code> properties from JSON request bodies when enabled.</td>
+          </tr>
+          <tr>
+            <td><code>stripEmptyStrings</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Removes empty string (<code>""</code>) properties from JSON request bodies when enabled.</td>
+          </tr>
+          <tr>
+            <td><code>maxImageWidth</code></td>
+            <td><code>number</code></td>
+            <td><code>1920</code></td>
+            <td>Scales down uploaded image blobs/files wider than this pixel width while preserving aspect ratio.</td>
+          </tr>
+          <tr>
+            <td><code>imageQuality</code></td>
+            <td><code>number</code></td>
+            <td><code>0.85</code></td>
+            <td>Canvas export quality (<code>0</code>–<code>1</code>) for re-encoded images. Keeps original if larger.</td>
+          </tr>
+          <tr>
+            <td><code>compressThreshold</code></td>
+            <td><code>number</code></td>
+            <td><code>512</code></td>
+            <td>Minimum byte length before <code>mode: 'compressed'</code> compresses a string body.</td>
+          </tr>
+          <tr>
+            <td><code>debug</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Logs cache hits, coalesced requests, and unpacked payloads to the console.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="api-reference">
+      <h2>5. API Methods</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Signature</th>
+            <th>Behavior</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>enableGlobal()</code></td>
+            <td><code>() =&gt; void</code></td>
+            <td>Overrides <code>window.fetch</code> with <code>slim.fetch</code>.</td>
+          </tr>
+          <tr>
+            <td><code>disableGlobal()</code></td>
+            <td><code>() =&gt; void</code></td>
+            <td>Restores the original native <code>window.fetch</code>.</td>
+          </tr>
+          <tr>
+            <td><code>fetch(url, options)</code></td>
+            <td><code>(RequestInfo, RequestInit?) =&gt; Promise&lt;Response&gt;</code></td>
+            <td>Runs body optimization, cache lookup, in-flight coalescing, network fetch, and response envelope unpacking.</td>
+          </tr>
+          <tr>
+            <td><code>compress(input, format?)</code></td>
+            <td><code>(string | ArrayBufferView, string?) =&gt; Promise&lt;Uint8Array&gt;</code></td>
+            <td>Compresses a string or byte buffer using native <code>CompressionStream</code>.</td>
+          </tr>
+          <tr>
+            <td><code>decompress(input, format?, asText?)</code></td>
+            <td><code>(string | Uint8Array | ArrayBuffer, string?, boolean?) =&gt; Promise&lt;string | Uint8Array&gt;</code></td>
+            <td>Decompresses Base64 or binary bytes back into text (default) or <code>Uint8Array</code>.</td>
+          </tr>
+          <tr>
+            <td><code>bytesToBase64(bytes)</code></td>
+            <td><code>(Uint8Array) =&gt; string</code></td>
+            <td>Encodes compressed binary bytes into a Base64 string.</td>
+          </tr>
+          <tr>
+            <td><code>base64ToBytes(b64)</code></td>
+            <td><code>(string) =&gt; Uint8Array</code></td>
+            <td>Decodes a Base64 string back into a <code>Uint8Array</code>.</td>
+          </tr>
+          <tr>
+            <td><code>minifyJson(str)</code></td>
+            <td><code>(string) =&gt; string</code></td>
+            <td>Parses and compacts JSON strings without altering data values (unless strip flags are enabled).</td>
+          </tr>
+          <tr>
+            <td><code>optimizeImage(blob)</code></td>
+            <td><code>(Blob) =&gt; Promise&lt;Blob&gt;</code></td>
+            <td>Resizes and re-encodes eligible raster images on an HTML5 canvas, returning the smaller blob.</td>
+          </tr>
+          <tr>
+            <td><code>getStats()</code></td>
+            <td><code>() =&gt; object</code></td>
+            <td>Returns <code>{ requests, cacheHits, coalesced, unpackedResponses, bytesSaved }</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="compression-unpacking">
+      <h2>6. Compression, Unpacking &amp; Brotli Hook</h2>
+      <p>
+        You can call <code>compress()</code> and <code>decompress()</code> directly to shrink data stored in
+        <code>localStorage</code>, <code>IndexedDB</code>, or Web Workers, or to unpack compressed JSON envelopes.
+      </p>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>// Direct compression &amp; unpacking
+const raw = JSON.stringify({ records: Array(150).fill({ status: 'ok', role: 'member' }) });
+const gzBytes = await slim.compress(raw, 'gzip');
+const base64 = slim.bytesToBase64(gzBytes);
+
+// Restore back to exact original JSON string
+const restored = await slim.decompress(base64, 'gzip', true);
+
+// Optional Brotli ('br') decoder integration (e.g., using a WASM Brotli decoder)
+const slimWithBrotli = new NetSlim({
+  brotliDecompress: async (bytes) =&gt; {
+    return myBrotliWasmModule.decompress(bytes); // returns Uint8Array
+  }
+});</code></pre>
+      </div>
+    </section>
+
+    <section id="server-compatibility">
+      <h2>7. Zero-Server-Setup Reality Check</h2>
+      <div class="callout warn">
+        <strong>Why <code>mode: 'compatible'</code> is the default:</strong>
+        <p style="margin: 6px 0 0;">
+          Standard HTTP servers automatically compress <em>responses</em> (<code>Server -&gt; Browser</code>) using
+          <code>gzip</code> or <code>Brotli</code> when configured, and browsers decompress them natively. However,
+          an untouched server that expects plain JSON in a <code>POST</code> request body will reject raw compressed
+          bytes unless the server is configured to decompress <code>Content-Encoding</code> request bodies.
+          Keep <code>mode: 'compatible'</code> for third-party or untouched APIs, and use <code>mode: 'compressed'</code>
+          only for endpoints/workers you control that unpack compressed requests.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const prev = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => (btn.innerText = prev), 1400);
+      });
+    }
+  </script>
+</body>
+</html>
