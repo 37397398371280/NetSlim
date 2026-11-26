@@ -1,0 +1,35 @@
+{
+  "name": "netslim",
+  "version": "0.0.1-alpha.125",
+  "description": "Zero-dependency client-side network payload compressor, response unpacker, request deduplicator, and smart GET cache.",
+  "main": "netslim.js",
+  "module": "netslim.js",
+  "browser": "netslim.js",
+  "files": [
+    "netslim.js",
+    "netslim-m.js",
+    "netslim-vm.js",
+    "docs.html",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "fetch",
+    "compression",
+    "gzip",
+    "deflate",
+    "network",
+    "cache",
+    "deduplication",
+    "minify",
+    "image-optimization",
+    "zero-dependency"
+  ],
+  "author": "",
+  "license": "GPL-3.0",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
