@@ -25,7 +25,6 @@ jobs:
       - name: Stage release with alpha tag
         run: npm stage publish --tag alpha
 
-      # Run after the staged version is approved and published:
       - name: Add latest dist-tag
         run: |
           PKG_NAME=$(node -p "require('./package.json').name")
