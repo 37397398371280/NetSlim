@@ -1,6 +1,6 @@
 {
   "name": "netslim",
-  "version": "0.0.1-alpha.125",
+  "version": "0.0.1-alpha.150",
   "description": "Zero-dependency client-side network payload compressor, response unpacker, request deduplicator, and smart GET cache.",
   "main": "netslim.js",
   "module": "netslim.js",
