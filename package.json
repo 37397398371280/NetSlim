@@ -5,6 +5,10 @@
   "main": "netslim.js",
   "module": "netslim.js",
   "browser": "netslim.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/37397398371280/NetSlim.git"
+  },
   "files": [
     "netslim.js",
     "netslim-m.js",
